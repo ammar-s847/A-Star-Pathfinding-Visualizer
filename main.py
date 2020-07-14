@@ -1,6 +1,6 @@
 import pygame
-import io
 import sys
+import math
 
 pygame.init()
 WinX, WinY = 600, 400
@@ -27,20 +27,31 @@ class Node(object):
         self.barrier = barrier
         self.start = start
         self.end = end
-        self.fCost = None
-        self.gCost = None
-        self.hCost = None
+        self.fCost = None # gCost + hCost
+        self.gCost = None # Distance from Current node
+        self.hCost = None # Distance from End node
+    
+    def setCost(self):
+        global endX, endY, current
+        self.gCost = int(math.sqrt((self.x - current[0]) ** 2 + (self.y - current[1]) ** 2) * 10)
+        self.hCost = int(math.sqrt((endX - current[0]) ** 2 + (endY - current[1]) ** 2) * 10)
+        self.fCost = self.gCost + self.hCost
 
 # Variables
+nodeSize = 20 # Pixel side length of each grid node.
 grid = [[Node(x, y) for x in range(WinX // 20)] for y in range(WinY // 20)]
-barriers = []
-startX, startY = int(), int()
-endX, endY = int(), int()
-grid[4][5].start = True
-grid[14][21].end = True
+startX, startY = 24, 3
+endX, endY = 3, 17
+current = (startX, startY)
+analyzed = []
+path = [] # x, y pairs of nodes that belong to the shortest path.
+grid[startY][startX].start = True
+grid[endY][endX].end = True
+grid[startY][startX].setCost()
+print(grid[startY][startX].fCost)
 
+# Functions
 def setBarrier(x, y):
-    global barriers
     x = x // 20
     y = y // 20
     if grid[y][x].start == False and grid[y][x].end == False:
@@ -49,7 +60,7 @@ def setBarrier(x, y):
         grid[y][x].barrier = False
 
 def drawGrid():
-    nodeSize = 20 # Pixel side length of each grid node.
+    global nodeSize
     for n in grid:
         for Node in n:
             if Node.barrier == False:
@@ -67,8 +78,19 @@ def drawGrid():
                 rect = pygame.Rect(Node.x * nodeSize, Node.y * nodeSize, nodeSize, nodeSize)
                 pygame.draw.rect(SCREEN, WHITE, rect, 0)
 
-while run:
+def drawPath():
+    for i in path: # i is a tuple
+        rect = pygame.Rect(i[0] * nodeSize, i[1] * nodeSize, nodeSize, nodeSize)
+        pygame.draw.rect(SCREEN, YELLOW, rect, 0)
 
+def analyze():
+    if current[0] = endX and current[1] = endY:
+        drawPath()
+    else:
+        
+
+# PyGame Loop
+while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
