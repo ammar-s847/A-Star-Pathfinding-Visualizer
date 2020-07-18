@@ -27,7 +27,6 @@ class Node(object):
         self.hcost = 0
         self.fcost = 0
         self.previousNode = None
-        self.surrounding = []
     
     def setSurrounding(self, b):
         global grid, closedNodes
@@ -110,7 +109,7 @@ def drawGrid():
 def main(): # Main Algorithm Function
     global startX, startY, endX, endY, grid, openNodes, closedNodes, pathFound
     try:
-    # Find the Current Node (Open Node with smallest fcost).
+        # Find the Current Node (Open Node with smallest fcost).
         current = openNodes[0]
         for i in openNodes:
             if i != [startX, startY]:
@@ -121,6 +120,7 @@ def main(): # Main Algorithm Function
         # Add Current Node to Closed Nodes.
         closedNodes.append(current)
         del openNodes[openNodes.index(current)]
+        #print(current)
         
         # End Node found.
         if current == [endX, endY] or [endX, endY] in closedNodes:
