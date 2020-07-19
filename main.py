@@ -162,10 +162,14 @@ while run:
                     algorithm = True
                     print("Algorithm Started!")
             elif event.key == pygame.K_1:
-                startX, startY = pygame.mouse.get_pos()[0] // nodeSize, pygame.mouse.get_pos()[1] // nodeSize
-                openNodes = [[startX, startY]]
+                if not algorithm:
+                    startX, startY = pygame.mouse.get_pos()[0] // nodeSize, pygame.mouse.get_pos()[1] // nodeSize
+                    openNodes = [[startX, startY]]
+                    grid[startX][startY].walkable = True
             elif event.key == pygame.K_2:
-                endX, endY = pygame.mouse.get_pos()[0] // nodeSize, pygame.mouse.get_pos()[1] // nodeSize
+                if not algorithm:
+                    endX, endY = pygame.mouse.get_pos()[0] // nodeSize, pygame.mouse.get_pos()[1] // nodeSize
+                    grid[endX][endY].walkable = True
         elif event.type == pygame.MOUSEBUTTONDOWN: # Drag mouse while holding left click to add barriers.
             if event.button == 1:    
                 leftDrag = True
